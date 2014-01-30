@@ -1,5 +1,6 @@
 import csv
 import numpy as np
+import random as rand
 
 class fileParse:
 
@@ -62,17 +63,15 @@ class fileParse:
 
         allowedResponses = { 'yes' : True, 'y' : True, 'ye' : True, 'no' : False, 'n' : False }
 
-        # alter columns to proper data type (i.e. if column of strings >> int or float)
-        
         # stores the index of columns to discard
         remove = []
 
         # ask console for each column
         for i, node in enumerate( self.headers ):
             prompt = '\nWould you like to use ' + node.name + ' ( Type: ' + node.type + ';  Sensitive:  ' + str( node.restricted ) + ') in the analysis? (yes/no)'
-            #details = getTestStats( i )
+            details = self.getTestStats( i )
             print prompt
-            #print details
+            print details
             result = self.makePrompt( allowedResponses, 'Please answer yes or no' )
             if not result:
                 remove.append( i )
@@ -80,8 +79,56 @@ class fileParse:
         print remove
 
     def getTestStats( self, columnIndex ):
-        """Collects a little bit of data from a specific data column to help user determine if that row is worthwhile"""
-        pass
+        """Gets a specific data column and calculates some stats to help user determine if that row is worthwhile"""
+
+        column = self.data[:,columnIndex]
+        count = 0
+        for x in column:
+            if x == '':
+                count += 1
+
+        ratio = 1.0 * count len( column )
+        randomEnties = []
+
+        # grab some randoms if the column isn't blank
+        if ratio <= 0.80:
+            for i in range( 5 ):
+                temp = ''
+                while temp is not '':
+                    temp = column[ rand.randrange( 0, len( column ) ) ]
+                randomEnties.append( temp )
+
+
+        output = 'There are ' + str( len( column ) ) + ' entries'
+        output += '\nNumber of blank entries:  ' + str( count ) '  =  ' + str( 100 * ratio ) + '%'
+        if randomEnties:
+            output += '\nSome sample entries:  ' + str( randomEnties )[1:-1]
+
+
+        # numerical analysis
+        if self.headers[columnIndex].typ == 'CONT':
+
+            for i in range( len( column ) ):
+                if column[i] == '':
+                    column[i] = 0
+            column = column.astype('float32')
+
+            # some stats
+
+
+        # literary analysis
+        if self.headers[columnIndex].typ == 'ID' or self.headers[columnIndex].typ == 'CAT':
+
+            # most recurring entries
+
+            # number of unique entries
+
+            # most recurring words
+
+            # number of unique words
+
+
+        return output
 
 
     def makePrompt( self, allowedResponses, answerTheQuestion=None,question=None ):

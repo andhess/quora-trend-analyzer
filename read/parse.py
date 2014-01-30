@@ -100,24 +100,48 @@ class fileParse:
 
 
         output = 'There are ' + str( len( column ) ) + ' entries'
-        output += '\nNumber of blank entries:  ' + str( count ) '  =  ' + str( 100 * ratio ) + '%'
+        output += '\nNumber of blank entries:  ' + str( count ) '  =>  ' + str( 100 * ratio ) + '%'
         if randomEnties:
-            output += '\nSome sample entries:  ' + str( randomEnties )[1:-1]
+            output += '\nSome randomly selected sample entries:  ' + str( randomEnties )[1:-1]
 
 
         # numerical analysis
         if self.headers[columnIndex].typ == 'CONT':
 
-            for i in range( len( column ) ):
-                if column[i] == '':
-                    column[i] = 0
-            column = column.astype('float32')
+            columnRemove = False
 
-            # some stats
+            if count > 0:
+                columnRemove = np.array([])
+
+                # set null values in column to 0, duplicate all entries in columnRemove
+                for i in range( len( column ) ):
+                    if column[i] == '':
+                        column[i] = 0
+                    else:
+                        columnRemove = columnRemove.append( columnRemove, column[i] )
+                columnRemove = column.astype('float32')
+
+            # get stats on column
+            column = column.astype('float32')
+            if columnRemove:
+                output += '\nSet empty values to 0'
+            output += '\nMax: ' + str( np.amax( column ) ) + '  Min:  ' + str( np.amin( column ) ) + '  Range:  ' + str( np.ptp( column ) )
+            output += '\nMean:  ' + str( np.mean( column ) ) + '  Meadian:  ' + str( np.median( column ) )
+            output += '\nStandard Deviation:  ' + str( np.std( column ) ) + 'Variance:  ' str( np.var( column ) )
+
+            
+            # if also have columnRemoved, get the same stats
+            if columnRemove:
+                output += '\n\nSame stats but ignoring empty values'
+                output += '\nMax: ' + str( np.amax( columnRemove ) ) + '  Min:  ' + str( np.amin( columnRemove ) ) + '  Range:  ' + str( np.ptp( columnRemove ) )
+                output += '\nMean:  ' + str( np.mean( columnRemove ) ) + '  Meadian:  ' + str( np.median( columnRemove ) )
+                output += '\nStandard Deviation:  ' + str( np.std( columnRemove ) ) + 'Variance:  ' str( np.var( columnRemove ) )
+
+
 
 
         # literary analysis
-        if self.headers[columnIndex].typ == 'ID' or self.headers[columnIndex].typ == 'CAT':
+        elif self.headers[columnIndex].typ == 'ID' or self.headers[columnIndex].typ == 'CAT':
 
             # most recurring entries
 
@@ -127,7 +151,8 @@ class fileParse:
 
             # number of unique words
 
-
+        # otherwise it's time
+        else:
         return output
 
 

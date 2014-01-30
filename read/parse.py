@@ -8,7 +8,7 @@ class fileParse:
 
         self.headers = []
         self.data = []
-        self.dataLength = 0
+        self.dataShape = 0
         self.filepath = filePath
 
     def __str__( self ):
@@ -20,7 +20,7 @@ class fileParse:
         output += 'Length:  '  + str( len( self.headers) ) + '\n\n'
         for header in self.headers:
                 output += str( header )
-        output += '\nNumber of lines:  ' + str( self.dataLength )
+        output += '\nDimensions of data:  ' + str( self.dataShape )
         return output
 
     def readQuoraData( self ):
@@ -40,7 +40,10 @@ class fileParse:
 
             # grab the rest of the data now
             for row in csvData:
-                self.data = np.genfromtxt( csvfile, dtype = str, delimiter = ',' )
+                self.data.append( row )
+
+        self.data = np.array( self.data )
+        self.dataShape = self.data.shape
 
         # make sure Name row and Type row have same number of entries
         nameLength = len( names )
@@ -51,11 +54,7 @@ class fileParse:
         for i in range( nameLength ):
             self.headers.append( headerNode( names[i], types[i] ) )
 
-        # update row count
-        self.dataLength = self.data.size
-
         self.setupHeaders()
-
 
 
     def setupHeaders( self ):
@@ -63,6 +62,8 @@ class fileParse:
 
         allowedResponses = { 'yes' : True, 'y' : True, 'ye' : True, 'no' : False, 'n' : False }
 
+        # alter columns to proper data type (i.e. if column of strings >> int or float)
+        
         # stores the index of columns to discard
         remove = []
 

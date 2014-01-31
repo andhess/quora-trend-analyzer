@@ -18,7 +18,7 @@ class fileParse:
         output = '\n\nOverview of Data:'
         output = '\nFile location:  ' + self.filepath
         output += '\nHeaders:\n'
-        output += '\nLength:  '  + str( len( self.headers) ) + '\n\n'
+        output += '\nLength:  '  + str( len( self.headers) )
         for header in self.headers:
                 output += str( header )
         output += '\nDimensions of data:  ' + str( self.dataShape )

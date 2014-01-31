@@ -6,6 +6,8 @@ import numpy as np
 #import scipy.stats
 from read import parse
 from analysis import sort
+import csvOutput as exp
+
 
 
 def main( filePath ):
@@ -21,23 +23,36 @@ def main( filePath ):
 
     while True:
 
-        job = newCommand()
+        job = command( responses )
 
 
+        if job == 'export':
+            print 'File will be written to the exports/ directory. Please enter a file name:\n'
+            filename = raw_input().lower()
+            writer = exp.csvExport( filename )
+            writer.writeCSV( data, headers )
 
-        if job == 'False'
-
-
-        if job == 'exit'
+        elif job == 'exit':
             sys.exit()
 
+        else:
+            pass
 
 
-    print 'Successfully imported all data from CSV'
+def command( responses ):
 
+    log = '\nPlease select an option from the list below:\n'
+    for item in responses:
+        log += item + '\n'
 
+    print log
 
-
+    while True:
+        choice = raw_input().lower()
+        if choice in responses:
+            return choice
+        else:
+            print 'Please select an option from the list above'
 
 
 if __name__ == "__main__":

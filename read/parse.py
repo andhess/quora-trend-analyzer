@@ -15,7 +15,7 @@ class fileParse:
     def __str__( self ):
         """print statement for fileParse class"""
 
-        output = '\n\nOverview of Analysis:'
+        output = '\n\nOverview of Data:'
         output = '\nFile location:  ' + self.filepath
         output += '\nHeaders:\n'
         output += '\nLength:  '  + str( len( self.headers) ) + '\n\n'

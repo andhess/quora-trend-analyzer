@@ -15,10 +15,10 @@ class fileParse:
     def __str__( self ):
         """print statement for fileParse class"""
 
-        output = ''
-        output = 'File location:  ' + self.filepath + '\n'
-        output += 'Headers:\n'
-        output += 'Length:  '  + str( len( self.headers) ) + '\n\n'
+        output = '\n\nOverview of Analysis:'
+        output = '\nFile location:  ' + self.filepath
+        output += '\nHeaders:\n'
+        output += '\nLength:  '  + str( len( self.headers) ) + '\n\n'
         for header in self.headers:
                 output += str( header )
         output += '\nDimensions of data:  ' + str( self.dataShape )
@@ -240,6 +240,5 @@ class headerNode():
         output += 'Restricted:\t' + str( self.restricted ) + '\n'
 
         return output
-
 
 

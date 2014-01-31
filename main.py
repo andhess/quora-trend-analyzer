@@ -7,10 +7,10 @@ from read import parse
 
 
 def main( filePath ):
-    test = parse.fileParse( filePath )
-    test.readQuoraData()
+    query = parse.fileParse( filePath )
+    query.readQuoraData()
     gc.collect()
-    print test
+    print query
 
 if __name__ == "__main__":
     main( sys.argv[1] )

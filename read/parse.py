@@ -1,6 +1,7 @@
 import csv
 import numpy as np
 import random as rand
+import headerNode as hea
 
 class fileParse:
 
@@ -53,7 +54,7 @@ class fileParse:
 
         # create header objects
         for i in range( nameLength ):
-            self.headers.append( headerNode( names[i], types[i] ) )
+            self.headers.append( head.headerNode( names[i], types[i] ) )
 
         self.setupHeaders()
 
@@ -196,6 +197,7 @@ class fileParse:
         else:
             output += '\nNo further information currently available for time categories'
 
+        self.headers[columnIndex].data = output
         return output + '\n'
 
 
@@ -216,29 +218,5 @@ class fileParse:
             if answerTheQuestion:
                 print answerTheQuestion
 
-
-class headerNode():
-    """
-    Object class to represent each column of data
-    Attributes:
-        string name, string type, bool restricted (/SENSITIVE)
-    """
-
-    def __init__( self, name, typ ):
-        self.name = name
-        splice = typ.find('/SENSITIVE')
-        if  splice >= 0:
-            self.type = typ[:splice]
-            self.restricted = True
-        else:
-            self.type = typ
-            self.restricted = False
-
-    def __str__( self ):
-        output = '\nName:\t\t' + self.name + '\n'
-        output += 'Type:\t\t' + self.type + '\n'
-        output += 'Restricted:\t' + str( self.restricted ) + '\n'
-
-        return output
 
 

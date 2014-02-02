@@ -5,8 +5,8 @@ import gc
 import numpy as np
 #import scipy.stats
 from read import parse
-from analysis import sort
-import csvOutput as exp
+from sortr import sortr
+from csvOut import csvOutput as exp
 
 
 
@@ -17,20 +17,21 @@ def main( filePath ):
     query = parse.fileParse( filePath )
     query.readQuoraData()
     print query
-    data = query.data
-    headers = query.headers
+    files = [ [ 'initial-parse', query.headers, query.data ] ]
     gc.collect()
 
     while True:
 
         job = command( responses )
 
+        if job == 'sortr':
+            sorts = sortr.
 
-        if job == 'export':
-            print 'File will be written to the exports/ directory. Please enter a file name:\n'
-            filename = raw_input().lower()
+
+        elif job == 'export':
             writer = exp.csvExport( filename )
-            writer.writeCSV( data, headers )
+            for batch in files:
+                writer.writeCSV( batch[0], batch[1], batch[2] )
 
         elif job == 'exit':
             sys.exit()
@@ -38,6 +39,7 @@ def main( filePath ):
         else:
             pass
 
+        gc.collect()
 
 def command( responses ):
 

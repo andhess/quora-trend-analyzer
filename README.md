@@ -33,6 +33,10 @@ To get a .csv file of all processes run on the data, simply run the export comma
 
 In data/csv/ you will find a few .csv files that were provided by Quora. The first two lines of these files indicate the titles for each column as well as the type of data that is in each column. Each remaining line is a unique row of data. Please refer to these examples and their website if you wish to use this engine for any other sources of data. The engine can accommodate virtually any variety of data as long as it follows the given format.
 
+## Privacy
+
+The organization of parse makes it easy to selectively cleanse the data from sensitive information. When assessing each column, parse indicates whether the data is sensitive and asks if it should be included in analysis.
+
 ## Additions
 
 If you would like to add your own analysis module to this project, just add an elif statement for it and add a command for it in the set in main.py

@@ -7,17 +7,18 @@ import numpy as np
 from read import parse
 from sortr import sortr
 from csvOut import csvOutput as exp
+from column import column as col
 
 
 
 def main( filePath ):
 
-    responses = ([ 'sortr', 'export', 'exit' ])
+    responses = ([ 'sortr', 'column', 'export', 'exit' ])
 
     query = parse.fileParse( filePath )
     query.readQuoraData()
     print query
-    files = [ [ 'initial-parse', query.data ] ]
+    files = [ [ 'initial-parse', query.headers, query.data ] ]
     gc.collect()
 
     while True:
@@ -26,14 +27,20 @@ def main( filePath ):
 
         if job == 'sortr':
             name = fileNameQuery()
-            sortTrial = sortr.sortr( name, query.headers, query.data )
+            sortTrial = sortr.sortr( query.headers, query.data )
             sortTrial.rearrangeData()
-            files.append( [name, sortTrial.data] )
+            files.append( [name, sortTrial.headers, sortTrial.data] )
+
+        elif job == 'column':
+            name = fileNameQuery()
+            columnTrial = col.column( query.headers, query.data )
+            columnTrial.analyze()
+            files.append( [name, columnTrial.heads, columnTrial.data] )
 
         elif job == 'export':
             writer = exp.csvExport()
             for batch in files:
-                writer.writeCSV( batch[0], query.headers, batch[1] )
+                writer.writeCSV( batch[0], batch[1], batch[2] )
 
             print '\nExporting complete\n'
 
@@ -74,7 +81,5 @@ def fileNameQuery():
 
 if __name__ == "__main__":
     main( sys.argv[1] )
-
-
 
 

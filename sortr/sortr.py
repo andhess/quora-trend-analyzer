@@ -2,9 +2,9 @@ import numpy as np
 
 class sortr:
 
-    def __init__( self, filename, headers, data ):
+    def __init__( self, headers, data ):
+        """An interface to sort columns in any way"""
 
-        self.filename = filename
         self.headers = headers
         self.data = data
         self.sortOrder = []
@@ -12,6 +12,10 @@ class sortr:
 
 
     def rearrangeData( self ):
+        """
+        Instigates the sorting process.
+        Makes consecutive prompts to help user determine which columns to sort by.
+        """ 
 
         # Tell user what's going on
         output = '\n\n\n\n\n\n------ SortR ------\n\n'
@@ -41,15 +45,18 @@ class sortr:
 
 
     def sortData( self ):
+        """
+        Rearranges data so it can be sorted, sorts, then reverts to orignal format.
+        Sorting is done via mergesort so that the sort is stable.
+        """
+
         self.setupDataForSorting()
-        print self.data
         self.data = np.sort( self.data, kind = 'mergesort' , order = self.sortOrder )
-        print self.data
         self.unpackDataForExport()
-        print self.data
 
 
     def setupDataForSorting( self ):
+        """Converts Numpy matrix to numpy tuple matrix with dtypes"""
         
         # Numpy has some odd quirks that makes this a little ugly
         dtype = []
@@ -69,6 +76,8 @@ class sortr:
 
 
     def unpackDataForExport( self ):
+        """Reverts Numpy tuple matrix to normal Numpy matrix"""
+
         tempData = []
         for row in self.data:
             tempData.append( list( row ) )
@@ -77,6 +86,8 @@ class sortr:
 
 
     def columnPrompt( self ):
+        """Prompt for selecting a column"""
+
         print 'Please select a column by which to sort the data:'
 
         while True:

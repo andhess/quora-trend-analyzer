@@ -28,6 +28,10 @@ The goal of SortR is to help someone find new trends in data. This is done by so
 
 For example, if the data has the columns City, State, and Action, sorting by State -> City -> Action would sort all data alphabetically by State name and then sort each entry by City. All entries with the same State and City would be further sorted by Action.
 
+### Column
+
+Column is a module that seeks to highlight the relationship between 2 specific columns, specifically one of type ID/CAT and one of CONT. Upon running the column module, the headers will be displayed followed by prompts for which to columns to select. The program will then gather statistics for each unique entry in the ID/CAT column and its corresponding CONT. A good use case for this might be to see how likely it is a value may occur when the record was from a specific area.
+
 ### Exporting
 
 To get a .csv file of all processes run on the data, simply run the export command. In the exports/ folder, a new directory will appear named by the timestamp of generation. In this directory there will be a .csv file for every analysis run. This feature makes it easy to use results from this data engine in other visualization softwares.

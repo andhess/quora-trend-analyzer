@@ -35,7 +35,7 @@ def main( filePath ):
             name = fileNameQuery()
             columnTrial = col.column( query.headers, query.data )
             columnTrial.analyze()
-            files.append( [name, columnTrial.heads, columnTrial.data] )
+            files.append( [name, columnTrial.headers, columnTrial.data] )
 
         elif job == 'export':
             writer = exp.csvExport()

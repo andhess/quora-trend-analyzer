@@ -20,7 +20,7 @@ class headerNode():
         self.data = None
 
     def __str__( self, includeData=False ):
-        output = '\n\nName:\t\t' + self.name + '\n'
+        output = '\nName:\t\t' + self.name + '\n'
         output += 'Type:\t\t' + self.type + '\n'
         output += 'Restricted:\t' + str( self.restricted ) + '\n'
         if includeData:

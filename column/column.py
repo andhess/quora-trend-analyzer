@@ -21,7 +21,7 @@ class column:
         output += 'Column allows you to see the correlation between columns.\n'
         output += 'A column of type ID or CAT will be compared against a column of type CONT.\n'
         output += 'To get started, briefly review each column:\n\n'
-        output += 'Headers:\nNumber of columns:  ' + str( len( self.headers ) )
+        output += 'Headers:\nNumber of columns:  ' + str( len( self.headers ) ) + '\n'
 
         # Reprint the headers & their info
         for i, header in enumerate( self.headers ):
@@ -30,8 +30,8 @@ class column:
         print output
 
         # get columns
-        stringColIndex =   columnPrompt()
-        floatColIndex  =   columnPrompt( 'CONT' )
+        stringColIndex =   self.columnPrompt()
+        floatColIndex  =   self.columnPrompt( 'CONT' )
         stringColumn   =   self.data[:,stringColIndex]
         floatColumn    =   self.data[:,floatColIndex]
 
@@ -43,27 +43,21 @@ class column:
             self.comparison[string] = np.append( self.comparison[string], number )
 
         # now collect stats on each set and set as tuple matrix
-        dtype = [ (0, 'S64'), (1, 'float32'), (2, 'float32'), (3, 'float32'), (4, 'float32'), (5, 'float32'), (6, 'float32'), (7, 'float32') ]
+        self.data = []
         for key in self.comparison:
-            temp = [ ( key, \
-                     np.amin( self.comparison[key] ), \
-                     np.amax( self.comparison[key] ), \
-                     np.ptp( self.comparison[key] ), \
-                     np.mean( self.comparison[key] ), \
-                     np.median( self.comparison[key] ), \
-                     np.std( self.comparison[key] ), \
-                     np.var( self.comparison[key] ) \
-                    ) ]
+            col = self.comparison[key].astype('float32')
+            temp = ( key, np.amin( col ), np.amax( col ), np.ptp( col ), np.mean( col ), np.median( col ), np.std( col ), np.var( col ) )
             self.data.append( temp )
 
+        dtype = [ ('0', 'S64'), ('1', 'float32'), ('2', 'float32'), ('3', 'float32'), ('4', 'float32'), ('5', 'float32'), ('6', 'float32'), ('7', 'float32') ]
         self.data = np.array( self.data, dtype = dtype )
 
         # ask which column to sort by - not very practical to have tie breakers here but,
         # if column isn't Name, then Name column will be default tie breaker
         sortingCol = self.sortPrompt()
-        sortBy = [sortingCol]
-        if choice != 0:
-            soryBy.append( 0 )
+        sortBy = [ str( sortingCol ) ]
+        if sortingCol != 0:
+            sortBy.append( '0' )
 
         self.data = np.sort( self.data, kind = 'mergesort', order = sortBy )
         self.exportData()
@@ -74,8 +68,10 @@ class column:
 
     def exportData( self ):
         """Updates self.data to standard 2D matrix"""
-        data = []
-        newColumns = [ 'Name', 'Min', 'Max', 'Range', 'Mean', 'Median', 'Standard Deviation', 'Variance']
+        data = [ [ 'Name', 'Min', 'Max', 'Range', 'Mean', 'Median', 'Standard Deviation', 'Variance'] ]
+        print self.data
+        print self.data[0]
+        print list( self.data[0] )
         for row in self.data:
             data.append( list( row ) )
 
@@ -112,6 +108,8 @@ class column:
             output += 'Column ' + str( k ) + ':  ' + item + '\n'
 
         output += '\nPlease select a column index to sort by:'
+
+        print output
 
         while True: 
             try:

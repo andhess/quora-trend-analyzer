@@ -3,9 +3,12 @@
 
 ## About
 
-This repository is my response to the open-ended challenge for a Trend Analyzer by Quora. The goal is to design and implement a trend analysis engine. This engine should be able to take as input a table of raw data and present an interface for trend analysis. You are free to design this interface and choose the data analysis features that you wish to support. It is important that the engine only exposes to the user data that does not have any personal identifiers and protects sensitive attributes from being revealed. The full listing is available here: http://www.quora.com/challenges#trend_analyzer
+This repository is my response to the open-ended challenge for a Trend Analyzer by Quora. 
 
-This project is written in Python 2.7.6 and uses NumPy 1.8 and SciPy 0.13.2
+"The goal is to design and implement a trend analysis engine. This engine should be able to take as input a table of raw data and present an interface for trend analysis. You are free to design this interface and choose the data analysis features that you wish to support. It is important that the engine only exposes to the user data that does not have any personal identifiers and protects sensitive attributes from being revealed... ". 
+The full listing is available here: http://www.quora.com/challenges#trend_analyzer
+
+This project is written in Python 2.7.6 and uses NumPy 1.8
 
 ## Getting Started
 
@@ -21,7 +24,7 @@ The program will begin by reading the entire .csv file and then ask a prompt on 
 
 ### SortR
 
-The goal of SortR is to help someone find new trends in data. This is done by sorting the data according to certain columns. A prompt will ask which column you wish to sort and will list all of the options. Consecutive prompts will ask if you would like to do another sort within each sorted section such that.
+The goal of SortR is to help someone find new trends in data. This is done by sorting the data according to certain columns. A prompt will ask which columns you wish to sort and will list all of the options. The data will then be sorted in the order of which you tell it to sort the columns.
 
 For example, if the data has the columns City, State, and Action, sorting by State -> City -> Action would sort all data alphabetically by State name and then sort each entry by City. All entries with the same State and City would be further sorted by Action.
 
@@ -39,4 +42,4 @@ The organization of parse makes it easy to selectively cleanse the data from sen
 
 ## Additions
 
-If you would like to add your own analysis module to this project, just add an elif statement for it and add a command for it in the set in main.py
+If you would like to add your own analysis module to this project, just add an elif statement for it in main.py. If you would like such module to be added to the main repository, please submit a pull request from your forked branch and email me at hello@andhess.com.

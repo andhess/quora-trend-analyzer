@@ -4,7 +4,6 @@ import math
 import gc
 import re
 import numpy as np
-#import scipy.stats
 from read import parse
 from sortr import sortr
 from csvOut import csvOutput as exp

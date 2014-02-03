@@ -13,7 +13,7 @@ from csvOut import csvOutput as exp
 
 def main( filePath ):
 
-    responses = ([ 'export', 'exit', 'sort'])
+    responses = ([ 'sortr', 'export', 'exit' ])
 
     query = parse.fileParse( filePath )
     query.readQuoraData()

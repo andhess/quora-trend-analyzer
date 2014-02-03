@@ -1,7 +1,7 @@
 import csv
 import numpy as np
 import random as rand
-import headerNode as hea
+import headerNode as head
 
 class fileParse:
 
@@ -18,7 +18,7 @@ class fileParse:
 
         output = '\n\nOverview of Data:'
         output = '\nFile location:  ' + self.filepath
-        output += '\nHeaders:\n'
+        output += '\nHeaders:'
         output += '\nLength:  '  + str( len( self.headers) )
         for header in self.headers:
                 output += str( header )

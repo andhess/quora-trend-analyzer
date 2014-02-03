@@ -7,7 +7,6 @@ class sortr:
         self.filename = filename
         self.headers = headers
         self.data = data
-        self.dataShape = dataShape
         self.sortOrder = []
         self.maxIndex = len( self.headers ) - 1
 
@@ -21,57 +20,85 @@ class sortr:
         output += 'Headers:\nNumber of columns:  ' + str( len( self.headers ) )
 
         # Reprint the headers & their info
-        for header in self.headers:
-            output += header
+        for i, header in enumerate( self.headers ):
+            output += '\nColumn ' + str( i ) + ':  ' + header.name
 
         print output
 
-        columnIndex = True
+        columnIndex = 0
+        print 'Select the index of the column you wish to sort by, in the order of priority'
+        print 'When done selecting, type "exit"'
 
-        while columnIndex and len( self.sortOrder ) <= len( self.headers )
-            columnIndex = columnPrompt():
+        # figure out which columns we want to sort by
+        while columnIndex >= 0 and len( self.sortOrder ) <= len( self.headers ):
+            columnIndex = self.columnPrompt()
 
             if columnIndex:
+                self.sortOrder.append( str( columnIndex ) )
+
+        self.sortData()
+
+        print '\n\nSortR done\n'
 
 
+    def sortData( self ):
+        self.setupDataForSorting()
+        self.data = np.sort( self.data, kind = 'mergesort' , order = self.sortOrder )
+        self.unpackDataForExport()
 
 
+    def setupDataForSorting( self ):
+        
+        # Numpy has some odd quirks that makes this a little ugly
+        dtype = []
+        for i, item in enumerate( self.headers ):
+            if item.type == 'CONT':
+                columnDataType = 'float32'
+            else:
+                columnDataType = 'S64'
 
-        print 'Please select a name for this sorting:\n'
+            dtype.append( ( str( i ), columnDataType ) )    
+
+        temp = []
+        for row in self.data:
+            temp.append( tuple( row ) )
+
+        self.data = np.array( temp, dtype = dtype )
 
 
+    def unpackDataForExport( self ):
+        tempData = []
+        for row in self.data:
+            uniqueRow = []
+            for item in row:
+                uniqueRow.append( item )
+            uniqueRow.append( tempData )
 
-    def sortDataSegment( self, data, columnId):
-        pass
-
-
-
-    def splitDataIntoSegments( self, columnId ):
-        pass
-
+        self.data = np.array( tempData )
 
 
     def columnPrompt( self ):
-        'Please select a column by which to sort the data:\n\n'
+        print 'Please select a column by which to sort the data:'
 
         while True:
             selection = raw_input().lower()
 
             # if want to finish
             if selection == 'exit':
-                return False
+                return -1
 
             try:
                 selection = int( selection )
                 if selection >= 0 and selection <= self.maxIndex:
-                    return selection
+                    if self.sortOrder.count( selection ) < 1:
+                        return selection
+                    else:
+                        print 'Already selected ' + str( selection )
                 else:
-                    print 'Please select a columnn index between [0, ' + str( self.maxIndex ) + ']\n'
+                    print 'Please select a columnn index between [0, ' + str( self.maxIndex ) + ']'
                 
             except ValueError:
-                print 'Please enter a valid number!\n'
-
-
+                print 'Please enter a valid number!'
 
 
 

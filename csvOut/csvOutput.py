@@ -1,5 +1,6 @@
 import os
 import csv
+import datetime
 
 class csvExport:
 
@@ -14,12 +15,9 @@ class csvExport:
 
         head = self.prepareHeaders( headers )
 
-        # generate a unique filename with a time stamp
-        timeStamp = datetime.datetime.now().strftime( "%H-%M-%S%f-%m-%d-%Y" )
-
         # setup file to save in a directory
         script_dir = os.path.dirname( os.path.abspath( __file__ ) )
-        dest_dir = os.path.join( script_dir, '..', 'exports', timeStamp )    
+        dest_dir = os.path.join( script_dir, '..', 'exports', self.timeStamp )    
         try:
                 os.makedirs(dest_dir)
         except OSError:

@@ -32,9 +32,11 @@ def main( filePath ):
             files.append( [name, sortTrial.data] )
 
         elif job == 'export':
-            writer = exp.csvExport( filename )
+            writer = exp.csvExport()
             for batch in files:
                 writer.writeCSV( batch[0], query.headers, batch[1] )
+
+            print '\nExporting complete\n'
 
         elif job == 'exit':
             sys.exit()

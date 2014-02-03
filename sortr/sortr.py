@@ -32,8 +32,7 @@ class sortr:
         # figure out which columns we want to sort by
         while columnIndex >= 0 and len( self.sortOrder ) <= len( self.headers ):
             columnIndex = self.columnPrompt()
-
-            if columnIndex:
+            if columnIndex >= 0:
                 self.sortOrder.append( str( columnIndex ) )
 
         self.sortData()
@@ -43,8 +42,11 @@ class sortr:
 
     def sortData( self ):
         self.setupDataForSorting()
+        print self.data
         self.data = np.sort( self.data, kind = 'mergesort' , order = self.sortOrder )
+        print self.data
         self.unpackDataForExport()
+        print self.data
 
 
     def setupDataForSorting( self ):
@@ -69,10 +71,7 @@ class sortr:
     def unpackDataForExport( self ):
         tempData = []
         for row in self.data:
-            uniqueRow = []
-            for item in row:
-                uniqueRow.append( item )
-            uniqueRow.append( tempData )
+            tempData.append( list( row ) )
 
         self.data = np.array( tempData )
 
@@ -90,7 +89,7 @@ class sortr:
             try:
                 selection = int( selection )
                 if selection >= 0 and selection <= self.maxIndex:
-                    if self.sortOrder.count( selection ) < 1:
+                    if self.sortOrder.count( str( selection ) ) < 1:
                         return selection
                     else:
                         print 'Already selected ' + str( selection )
